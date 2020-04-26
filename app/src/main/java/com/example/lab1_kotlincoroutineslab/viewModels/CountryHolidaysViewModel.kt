@@ -13,11 +13,11 @@ import java.lang.Exception
 class CountryHolidaysViewModel : ViewModel() {
 
     val holidays: MutableLiveData<List<DisplayHoliday>> = MutableLiveData()
-    val errorsMessageFeed: MutableLiveData<String> = MutableLiveData()
 
 
 
-    fun fetchHolidaysForCountry(countryCode: String){
+
+    fun fetchHolidaysForCountry(countryCode: String, errorCallback:(msg: String)->Unit){
         viewModelScope.launch {
             supervisorScope {
                 try {
@@ -33,8 +33,7 @@ class CountryHolidaysViewModel : ViewModel() {
                             { DateProcessor parseDate it })
                     }
                 } catch (e: Exception) {
-                    errorsMessageFeed.value =
-                        "Не удалось получить праздники для страны $countryCode"
+                    errorCallback("Не удалось получить праздники для страны $countryCode")
                 }
             }
         }

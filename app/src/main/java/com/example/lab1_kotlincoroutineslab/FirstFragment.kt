@@ -44,14 +44,14 @@ class FirstFragment : Fragment() {
             holidays_list.adapter = CountryHolidaysAdapter(it)
                             fetch_holidays.isEnabled = true
         })
-        model.errorsMessageFeed.observe(viewLifecycleOwner, Observer {
-            Snackbar.make(view,it,Snackbar.LENGTH_LONG).show()
-            fetch_holidays.isEnabled = true
-        })
+
 
         fetch_holidays.setOnClickListener {
                 fetch_holidays.isEnabled = false
-                model.fetchHolidaysForCountry(country_code.text.toString())
+                model.fetchHolidaysForCountry(country_code.text.toString()){
+                    Snackbar.make(view,it, Snackbar.LENGTH_LONG).show()
+                    fetch_holidays.isEnabled = true
+                }
         }
 
     }
